@@ -47,7 +47,7 @@
           kTSKEnforcePinning: @YES, // Block connections if pinning validation failed
           kTSKDisableDefaultReportUri: @YES,
           kTSKPublicKeyHashes : @[
-            @"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=",
+            @"lS0VZ2/wmISM4Ke9OblQ9QZdDLuE5/tcAwYMB35u++k=",
             @"BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB=", // Fake backup key but we need to provide 2 pins
           ],
       },
