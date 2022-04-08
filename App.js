@@ -10,39 +10,92 @@ import React, {useState} from 'react';
 import {StyleSheet, View, Text, Button, Platform} from 'react-native';
 const axios = require('axios').default;
 
-const URL = 'https://busdue.com';
+const CERTURL = 'https://busdue.com';
+const NONCERTURL = 'https://reqres.in/api/users/2';
 
 const App = () => {
-  const [validationMsg, setValidationMsg] = useState('Waiting');
-  const [validationStatus, setValidationStatus] = useState('');
-  const onConnectPress = () => {
-    fetch(URL)
+  const [validationFetchCertMsg, setValidationCertFetchMsg] =
+    useState('Waiting');
+  const [validationCertAxiosMsg, setValidationCertAxiosMsg] =
+    useState('Waiting');
+  const [validationFetchNonCertMsg, setValidationNonCertFetchMsg] =
+    useState('Waiting');
+  const [validationNonCertAxiosMsg, setValidationNonCertAxiosMsg] =
+    useState('Waiting');
+  const [validationFetchCertStatus, setValidationFetchCertStatus] =
+    useState('');
+  const [validationAxiosCertStatus, setValidationAxiosCertStatus] =
+    useState('');
+  const [validationFetchNonCertStatus, setValidationFetchNonCertStatus] =
+    useState('');
+  const [validationAxioshNonCertStatus, setValidationAxiosNonCertStatus] =
+    useState('');
+  const onCertFetch = () => {
+    fetch(CERTURL)
       .then(res => {
         console.log('**************');
         console.log(res);
         console.log('**************');
-        setValidationMsg('Valid certificate, connected.');
-        setValidationStatus('success');
+        setValidationCertFetchMsg('Valid certificate, connected.');
+        setValidationFetchCertStatus('success');
       })
       .catch(() => {
-        setValidationMsg('Certificate does not match, connection refused');
-        setValidationStatus('failed');
+        setValidationCertFetchMsg(
+          'Certificate does not match, connection refused',
+        );
+        setValidationFetchCertStatus('failed');
       });
   };
 
   const onAxiosCertFetch = () => {
     axios
-      .get(URL)
+      .get(CERTURL)
       .then(res => {
         console.log('**************');
         console.log(res);
         console.log('**************');
-        setValidationMsg('Valid certificate, connected.');
-        setValidationStatus('success');
+        setValidationCertAxiosMsg('Valid certificate, connected.');
+        setValidationAxiosCertStatus('success');
       })
       .catch(() => {
-        setValidationMsg('Certificate does not match, connection refused');
-        setValidationStatus('failed');
+        setValidationCertAxiosMsg(
+          'Certificate does not match, connection refused',
+        );
+        setValidationAxiosCertStatus('failed');
+      });
+  };
+
+  const onNonCertFetch = async () => {
+    try {
+      const response = await fetch(NONCERTURL);
+      console.log('**************');
+      console.log(response.json());
+      console.log('**************');
+      setValidationNonCertFetchMsg('Valid certificate, connected.');
+      setValidationFetchNonCertStatus('success');
+    } catch (e) {
+      setValidationNonCertFetchMsg(
+        'Certificate does not match, connection refused',
+      );
+      setValidationFetchNonCertStatus('failed');
+    }
+  };
+
+  const onAxiosNonCertFetch = () => {
+    axios
+      .get(NONCERTURL)
+      .then(res => {
+        console.log('**************');
+        console.log(res.data);
+        console.log('**************');
+        setValidationNonCertAxiosMsg('Valid certificate, connected.');
+        setValidationAxiosNonCertStatus('success');
+      })
+      .catch(() => {
+        setValidationNonCertAxiosMsg(
+          'Certificate does not match, connection refused',
+        );
+        setValidationAxiosNonCertStatus('failed');
       });
   };
 
@@ -51,19 +104,66 @@ const App = () => {
       <Text style={styles.title}>React Native SSL Pinning</Text>
       <Text style={styles.title}>({Platform.OS.toUpperCase()})</Text>
       <Text style={styles.header}>Certificate status:</Text>
-      <Text
-        style={[
-          styles.status,
-          validationStatus === 'success' && styles.success,
-          validationStatus === 'failed' && styles.failed,
-        ]}>
-        {validationMsg}
-      </Text>
-      <View style={styles.btnContainer}>
-        <Button title={`Test fetch call: ${URL}`} onPress={onConnectPress} />
+      <View style={styles.statusContainer}>
+        <Text
+          style={[
+            styles.status,
+            validationFetchCertStatus === 'success' && styles.success,
+            validationFetchCertStatus === 'failed' && styles.failed,
+          ]}>
+          {validationFetchCertMsg}
+        </Text>
+        <View style={styles.btnContainer}>
+          <Button title={`Test fetch call: ${CERTURL}`} onPress={onCertFetch} />
+        </View>
       </View>
-      <View style={styles.btnContainer}>
-        <Button title={`Test axios call: ${URL}`} onPress={onAxiosCertFetch} />
+      <View style={styles.statusContainer}>
+        <Text
+          style={[
+            styles.status,
+            validationAxiosCertStatus === 'success' && styles.success,
+            validationAxiosCertStatus === 'failed' && styles.failed,
+          ]}>
+          {validationCertAxiosMsg}
+        </Text>
+        <View style={styles.btnContainer}>
+          <Button
+            title={`Test axios call: ${CERTURL}`}
+            onPress={onAxiosCertFetch}
+          />
+        </View>
+      </View>
+      <View style={styles.statusContainer}>
+        <Text
+          style={[
+            styles.status,
+            validationFetchNonCertStatus === 'success' && styles.success,
+            validationFetchNonCertStatus === 'failed' && styles.failed,
+          ]}>
+          {validationFetchNonCertMsg}
+        </Text>
+        <View style={styles.btnContainer}>
+          <Button
+            title={`Test fetch call: ${NONCERTURL}`}
+            onPress={onNonCertFetch}
+          />
+        </View>
+      </View>
+      <View style={styles.statusContainer}>
+        <Text
+          style={[
+            styles.status,
+            validationAxioshNonCertStatus === 'success' && styles.success,
+            validationAxioshNonCertStatus === 'failed' && styles.failed,
+          ]}>
+          {validationNonCertAxiosMsg}
+        </Text>
+        <View style={styles.btnContainer}>
+          <Button
+            title={`Test axios call: ${NONCERTURL}`}
+            onPress={onAxiosNonCertFetch}
+          />
+        </View>
       </View>
     </View>
   );
@@ -107,6 +207,12 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     paddingHorizontal: 16,
     marginTop: 24,
+  },
+  statusContainer: {
+    with: 200,
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 
