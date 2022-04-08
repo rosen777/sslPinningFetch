@@ -12,6 +12,7 @@ import com.facebook.soloader.SoLoader;
 import com.sslpinningfetch.newarchitecture.MainApplicationReactNativeHost;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
+import com.facebook.react.modules.network.OkHttpClientProvider;
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -52,6 +53,9 @@ public class MainApplication extends Application implements ReactApplication {
   @Override
   public void onCreate() {
     super.onCreate();
+    // Provide a client factory to React Native's OkHttpClientProvider and it will
+    // use it instead of the default one.
+    OkHttpClientProvider.setOkHttpClientFactory(new SSLPinnerFactory());
     // If you opted-in for the New Architecture, we enable the TurboModule system
     ReactFeatureFlags.useTurboModules = BuildConfig.IS_NEW_ARCHITECTURE_ENABLED;
     SoLoader.init(this, /* native exopackage */ false);
